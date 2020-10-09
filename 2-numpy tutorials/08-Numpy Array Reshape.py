@@ -3,7 +3,7 @@
 
 """
 @Project : asc-project-learning_python      
-@File    : 08-Numpy Aerray Reshaping.py
+@File    : 08-Numpy Array Reshape.py
 @Author  : Daolin Sheng 
 @Contact : shengdl999links@gmail.com  
 @Date    : 2020/10/9 5:55 下午
