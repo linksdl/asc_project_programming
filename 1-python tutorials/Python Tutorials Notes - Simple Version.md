@@ -198,6 +198,83 @@ print("Python is " + x)
 
 ```
 
+#### Python Scope
+
+A variable is only available from inside the region it is created. This is called `scope`.
+
+##### 1. Local Scope
+A variable created inside a function belongs to the `local scope` of that function, and can only be used inside that function.
+
+```python
+
+def my_func():
+  x = 300
+  print(x)
+
+my_func() # A variable created inside a function is available inside that function.
+
+# Function Inside Function
+def my_func():
+  x = 300
+  def my_innerfunc():
+    print(x)
+  my_innerfunc()
+
+my_func()
+
+```
+##### 2. Global Scope
+A variable created in the main body of the Python code is a global variable and belongs to the global scope.
+
+Global variables are available from within any scope, global and local.
+
+```python
+# A variable created outside of a function is global and can be used by anyone.
+def myfunc():
+  print(x)
+
+myfunc()
+
+print(x)
+
+# Naming Variables
+x = 300
+
+def my_func():
+  x = 200
+  print(x)
+
+my_func()
+
+print(x)
+
+# Global Keyword
+# If you need to create a global variable, but are stuck in the local scope, you can use the global keyword.
+# The global keyword makes the variable global.
+
+def my_func():
+  global x
+  x = 300
+
+my_func()
+
+print(x)
+
+# To change the value of a global variable inside a function, refer to the variable by using the global keyword
+
+x = 300
+
+def my_func():
+  global x
+  x = 200
+
+my_func()
+
+print(x)
+
+```
+
+
 #### Python Operators
 
 Operators are used to perform operations on variables and values.
@@ -281,7 +358,7 @@ Membership operators are used to test if a sequence is presented in an object:
 |in | Returns True if a sequence with the specified value is present in the object	|x in y	
 | not in	| Returns True if a sequence with the specified value is not present in the object	| x not in y
 
-#### 7. Python Bitwise Operators
+##### 7. Python Bitwise Operators
 Bitwise operators are used to compare (binary) numbers:
 
 | Operator	| Description	| Example |
@@ -1139,5 +1216,214 @@ del dict # The del keyword can also delete the dictionary completely
 
 dict.clear() # The del keyword can also delete the dictionary completely
 
+```
+
+#### Python Arrays
+** Note: Python does not have built-in support for Arrays, but Python Lists can be used instead.**
+
+**Arrays**
+- Note: This page shows you how to use LISTS as ARRAYS, however, to work with arrays in Python you will have to import a library, like the NumPy library.
+
+```python
+# Create Array
+cars = ["Ford", "Volvo", "BMW"]
+
+# Access Element
+cars[0]
+
+# Modify Element
+cars[0] = "Toyota"
+
+# Length of An Array
+x = len(cars)  # Note: The length of an array is always one more than the highest array index.
+
+# Loop Array
+for x in cars:
+	print(x)
+
+# Add Element
+cars.append("Honda")
+
+# Remove Array
+cars.pop(1)
+
+cars.remove("Volvo") # Note: The list's remove() method only removes the first occurrence of the specified value.
 
 ```
+
+##### 1. Array Methods
+Python has a set of built-in methods that you can use on lists/arrays.
+
+|  Method	| Description |
+| --------- | ----------- |
+| append()	| Adds an element at the end of the list|
+| clear()	| Removes all the elements from the list|
+| copy()	| Returns a copy of the list|
+| count()	| Returns the number of elements with the specified value|
+| extend()	| Add the elements of a list (or any iterable), to the end of the current list|
+| index()	| Returns the index of the first element with the specified value|
+| insert()	| Adds an element at the specified position|
+| pop()	    | Removes the element at the specified position|
+| remove()	| Removes the item with the specified value|
+| reverse()	| Reverses the order of the list|
+| sort()	| Sorts the list|
+
+**Note: Python does not have built-in support for Arrays, but Python Lists can be used instead.**
+
+
+#### Python Iterators
+An iterator is an object that contains a countable number of values.
+
+An iterator is an object that can be iterated upon, meaning that you can traverse through all the values.
+
+Technically, in Python, an iterator is an object which implements the iterator protocol, which consist of the methods `__iter__() `and `__next__()`.
+
+**Iterator vs Iterable**
+Lists, tuples, dictionaries, and sets are all iterable objects. They are iterable containers which you can get an iterator from.
+
+All these objects have a `iter()` method which is used to get an iterator
+
+```python
+# Return an iterator from a tuple, and print each value
+my_tuple = ("apple", "banana", "cherry")
+my_it = iter(my_tuple)
+
+print(next(my_it))
+print(next(my_it))
+print(next(my_it))
+
+# Strings are also iterable objects, containing a sequence of characters
+mystr = "banana"
+myit = iter(mystr)
+
+print(next(myit))
+print(next(myit))
+print(next(myit))
+print(next(myit))
+print(next(myit))
+print(next(myit))
+
+# Looping Through an Iterator
+# Iterate the values of a tuple
+mytuple = ("apple", "banana", "cherry")
+
+for x in mytuple:
+  print(x)
+
+# Iterate the characters of a string
+mystr = "banana"
+
+for x in mystr:
+  print(x)
+```
+##### 1. Create an Iterator
+To create an object/class as an iterator you have to implement the methods `__iter__()` and `__next__() `to your object.
+
+As you have learned in the Python Classes/Objects chapter, all classes have a function called `__init__()`, which allows you to do some initializing when the object is being created.
+
+The `__iter__()` method acts similar, you can do operations (initializing etc.), but must always return the iterator object itself.
+
+The `__next__()` method also allows you to do operations, and must return the next item in the sequence.
+
+```
+class MyNumbers:
+  def __iter__(self):
+    self.a = 1
+    return self
+
+  def __next__(self):
+    x = self.a
+    self.a += 1
+    return x
+
+myclass = MyNumbers()
+myiter = iter(myclass)
+
+print(next(myiter))
+print(next(myiter))
+print(next(myiter))
+print(next(myiter))
+print(next(myiter))
+
+```
+##### 2. StopIteration
+
+The example above would continue forever if you had enough next() statements, or if it was used in a `for` loop.
+
+To prevent the iteration to go on forever, we can use the `StopIteration` statement.
+
+In the `__next__()` method, we can add a terminating condition to raise an error if the iteration is done a specified number of times.
+
+```python
+class MyNumbers:
+  def __iter__(self):
+    self.a = 1
+    return self
+
+  def __next__(self):
+    if self.a <= 20:
+      x = self.a
+      self.a += 1
+      return x
+    else:
+      raise StopIteration
+
+myclass = MyNumbers()
+myiter = iter(myclass)
+
+for x in myiter:
+  print(x)
+```
+
+
+### Chapter 5: Python Logical
+
+#### Python If ... Else
+
+
+#### Python While Loops
+
+
+#### Python For Loops
+
+
+### Chapter 6: Python Object-oriented
+
+
+#### Python Functions
+
+#### Python Lambda
+
+#### Python Classes/Objects
+
+#### Python Inheritance
+
+#### Python Modules
+
+
+### Chapter 7: Python Handle 
+
+#### Python Try Except
+
+#### Python Dates
+
+#### Python Math
+
+#### Python RegEx
+
+#### Python JSON
+
+#### Python PIP
+
+#### Python Input
+
+
+### Chapter 8: Python File Handing
+
+
+#### Python Read Files
+
+#### Python Write/Create Files
+
+#### Python Delete Files
+
